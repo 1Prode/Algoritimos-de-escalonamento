@@ -1,14 +1,33 @@
-listaprocessos = []
+def round_robin (processos, quantum):
+    n = len(processos)
+    tempo_restante = processos[:]
+    ciclo_atual = 0
+    ciclo_atual = [0] * n 
+    print(ciclo_atual)
+    fila = list(range(n))
 
-processo_IN = input("Digite a quantidade de processos que deseja iniciar: ")
+    while fila:
+        i = fila.pop(0)
 
-for i in range(int(processo_IN)):
-    processo_EXE = input(f"Digite o tempo de execução do processo P{i + 1}: ")
-    if (processo_EXE.isdigit() and int(processo_EXE) > 0):
-        listaprocessos.append(processo_EXE)
-    else:
-        print("Entrada inválida. Por favor, insira um número inteiro positivo.")
 
-print("Processos em andamento:", listaprocessos)
+    return
 
-# if __name__ == "__main__"
+
+
+
+if __name__ == "__main__":
+    processos_IN = int(input("Insira a quantidade de processos: "))
+    processos = []
+    for i in range(processos_IN):
+        tempo = int(input(f"Insira o tempo de execucao do processo P{i+1}: "))
+        processos.append(processos_IN)
+
+    quantum = int(input("Insira o valor do quantum: "))
+
+    # Execucao do Round Robin
+    resultado = round_robin(processos, quantum)
+
+    # Saida
+    print("\nTempo do ciclo de vida de cada Processo:")
+    for i, tempo in enumerate(resultado):
+        print(f"P{i+1}: {tempo} unidades de tempo")
