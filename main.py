@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from algoritimos.roundrobin import Escalonador
+from algoritimos.backend import Escalonador
 
 class Principal(ctk.CTk):
     def __init__(self):
