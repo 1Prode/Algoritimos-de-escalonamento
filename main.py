@@ -1,6 +1,5 @@
 import customtkinter as ctk
-import random
-from algoritimos import round_robin, fcfs   # importa os métodos
+from algoritimos.roundrobin import Escalonador
 
 class Principal(ctk.CTk):
     def __init__(self):
@@ -13,10 +12,8 @@ class Principal(ctk.CTk):
         self.geometry(f"{largura}x{altura}+{x}+{y}")
         self.resizable(False, False)
 
-        # Variáveis de controle
-        self.processos = []
-        self.processo_id = 1
-        self.quantum_fixo = None
+        # Instância do backend
+        self.escalonador = Escalonador()
 
         # Layout
         self.grid_columnconfigure(0, weight=1)
@@ -60,21 +57,9 @@ class Principal(ctk.CTk):
         except ValueError:
             tempo_exec = 0
 
-        if self.quantum_fixo is None:
-            try:
-                self.quantum_fixo = int(self.quantumIn.get())
-            except ValueError:
-                self.quantum_fixo = 0
+        processo = self.escalonador.adicionar_processo(tempo_exec, self.quantumIn.get())
+        if self.escalonador.quantum_fixo is not None:
             self.quantumIn.configure(state="disabled")
-
-        processo = {
-            "pid": f"P{self.processo_id}",
-            "exec": tempo_exec,
-            "quantum": self.quantum_fixo,
-            "cor": f"#{random.randint(0,255):02x}{random.randint(0,255):02x}{random.randint(0,255):02x}"
-        }
-        self.processos.append(processo)
-        self.processo_id += 1
 
         self._criar_item_display(processo, f"{processo['pid']} | Exec: {tempo_exec} | Quantum: {processo['quantum']}")
         self.execucaoIn.delete(0, "end")
@@ -83,18 +68,15 @@ class Principal(ctk.CTk):
         for widget in self.display.winfo_children():
             widget.destroy()
 
-        # Aqui você escolhe o algoritmo
-        resultados = round_robin(self.processos, self.quantum_fixo)
-        
+        # Aqui você pode trocar o método de escalonamento
+        resultados = self.escalonador.round_robin()
 
-        for i, p in enumerate(self.processos):
+        for i, p in enumerate(self.escalonador.processos):
             texto = f"{p['pid']} finalizou em {resultados[i]} unidades de tempo"
             self._criar_item_display(p, texto)
 
     def resetar(self):
-        self.processos = []
-        self.processo_id = 1
-        self.quantum_fixo = None
+        self.escalonador.resetar()
         self.quantumIn.configure(state="normal")
         self.quantumIn.delete(0, "end")
         self.execucaoIn.delete(0, "end")
