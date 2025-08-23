@@ -6,7 +6,7 @@ class Principal(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Simulador de Escalonamento")
-        self.update_idletasks() 
+        self.update_idletasks()
 
         largura = 675
         altura = 370
@@ -22,6 +22,11 @@ class Principal(ctk.CTk):
         # aplica geometria centralizada
         self.geometry(f"{largura}x{altura}+{x}+{y}")
         self.resizable(False, False)
+
+        # variáveis
+        self.processos = []
+        self.processo_id = 1
+        self.quantum_fixo = None  # Quantum travado após primeiro processo
 
         # Configura o grid principal
         self.grid_columnconfigure(0, weight=1)
@@ -41,29 +46,40 @@ class Principal(ctk.CTk):
         self.quantumIn.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
         self.addProcessoBtn = ctk.CTkButton(
-            control_frame, text="Adicionar Processo", command=self.add_processo, fg_color="purple", hover_color="#4d004d")
+            control_frame,
+            text="Adicionar Processo",
+            command=self.add_processo,
+            fg_color="purple",
+            hover_color="#4d004d"
+        )
         self.addProcessoBtn.grid(row=0, column=2, padx=5, pady=5, sticky="ew")
 
-        self.simularBtn = ctk.CTkButton(control_frame, text="Iniciar Simulação",
-                                        command=self.simular, fg_color="purple", hover_color="#4d004d")
+        self.simularBtn = ctk.CTkButton(
+            control_frame,
+            text="Iniciar Simulação",
+            command=lambda: self.simular(self.processos, self.quantum_fixo),
+            fg_color="purple",
+            hover_color="#4d004d"
+        )
         self.simularBtn.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
 
         self.resetBtn = ctk.CTkButton(
             control_frame, text="↻", width=27, height=27,
-            command=self.resetar, fg_color="purple", hover_color="#D30000", corner_radius=8
+            command=self.resetar, fg_color="purple",
+            hover_color="#D30000", corner_radius=8
         )
         self.resetBtn.grid(row=0, column=4, padx=5, pady=5)
 
         # ---- Área de exibição (processos/resultados) ----
-        self.display = ctk.CTkScrollableFrame(self, label_text="Processos e Resultados", fg_color="transparent",
-                                              scrollbar_button_color="#ebebeb", scrollbar_button_hover_color="#ebebeb")
+        self.display = ctk.CTkScrollableFrame(
+            self,
+            label_text="Processos e Resultados",
+            fg_color="transparent",
+            scrollbar_button_color="#ebebeb",
+            scrollbar_button_hover_color="#ebebeb"
+        )
         self.display.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
         self.display.grid_columnconfigure(0, weight=1)
-
-        # Lista de processos armazenados
-        self.processos = []
-        self.processo_id = 1
-        self.quantum_fixo = None  # Quantum travado após primeiro processo
 
     def add_processo(self):
         try:
@@ -87,7 +103,7 @@ class Principal(ctk.CTk):
             "pid": f"P{self.processo_id}",
             "exec": tempo_exec,
             "quantum": quantum,
-            "cor": cor 
+            "cor": cor
         }
         self.processos.append(processo)
         self.processo_id += 1
@@ -98,15 +114,41 @@ class Principal(ctk.CTk):
         # Limpa entrada
         self.execucaoIn.delete(0, "end")
 
-    def simular(self):
+    def simular(self, processos, quantum):
+        if not processos or quantum <= 0:
+            return
+
         # Limpa área de exibição
         for widget in self.display.winfo_children():
             widget.destroy()
 
-        # Exemplo: só exibe em ordem
-        for i, p in enumerate(self.processos, start=1):
-            texto = f"Execução {i}: {p['pid']} (tempo {p['exec']})"
+        # extrai tempos de execução
+        tempos = [p["exec"] for p in processos]
+        n = len(tempos)
+
+        tempo_restante = tempos[:]
+        tempo_atual = 0
+        tempo_ciclo = [0] * n
+        fila = list(range(n))
+
+        while fila:
+            i = fila.pop(0)
+
+            if tempo_restante[i] > quantum:
+                tempo_atual += quantum
+                tempo_restante[i] -= quantum
+                fila.append(i)
+            else:
+                tempo_atual += tempo_restante[i]
+                tempo_restante[i] = 0
+                tempo_ciclo[i] = tempo_atual
+
+        # mostra no display
+        for i, p in enumerate(processos):
+            texto = f"{p['pid']} finalizou em {tempo_ciclo[i]} unidades de tempo"
             self._criar_item_display(p, texto)
+
+        return tempo_ciclo
 
     def resetar(self):
         # Resetar tudo
@@ -125,13 +167,13 @@ class Principal(ctk.CTk):
         item.pack(fill="x", pady=5, padx=5)
 
         bola = ctk.CTkLabel(item, text="●", text_color=processo["cor"], font=("Arial", 28))
-        bola.pack(side="left", padx=10, pady=(0,5))
+        bola.pack(side="left", padx=10, pady=(0, 5))
 
         info = ctk.CTkLabel(item, text=texto)
         info.pack(side="left", padx=17)
 
 
 if __name__ == "__main__":
-    ctk.set_appearance_mode("light")
+    ctk.set_appearance_mode("dark")
     app = Principal()
     app.mainloop()
