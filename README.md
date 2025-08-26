@@ -1,18 +1,20 @@
 # 📚 Simulador de Algoritmos de Escalonamento — Round Robin
 
----
 <div align="center">
- 
-![GitHub last commit](https://img.shields.io/github/last-commit/MathiasTAR/Algoritimos-de-escalonamento)
-![GitHub repo size](https://img.shields.io/github/repo-size/MathiasTAR/Algoritimos-de-escalonamento)
- 
+  <img src="assets/nadaainda.png" width="200" alt="Logo ">
+
+![GitHub last commit](https://img.shields.io/github/last-commit/MathiasTAR/LibrisMobile)
+![GitHub repo size](https://img.shields.io/github/repo-size/MathiasTAR/LibrisMobile)
+
 </div>
+
+---
 
 ## ✨ Demonstração
 
-| Tela Inicial                                             | Adicionar Processos                              | Simular Round Robin                                  
+| Tela Inicial                                              | Adicionar Processos                                       | Simular Round Robin                                  
 | --------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------- 
-| <img src="assets/TelaInicial" width="400"> | <img src="assets/AdicionarProcessos" width="400"> | <img src="assets/Simular" width="400"> 
+| <img src="assets/TelaInicial.png" width="600"> | <img src="assets/AdicionarProcessos.png" width="600"> | <img src="assets/Simular.png" width="600"> 
 
 ---
 
