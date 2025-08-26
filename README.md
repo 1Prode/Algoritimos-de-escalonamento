@@ -99,6 +99,8 @@ Tempos de finalização: `[11, 6, 16]` (P1, P2, P3)
 2. Execute `python3 main.py` (requere `customtkinter` e `CTkMessagebox`) para usar a interface gráfica de teste.
 3. Ou importe e invoque diretamente em um REPL:
 
+* **Requesitos**: `pip install customtkinter`
+
 > Observação: no repositório a função espera dicionários com campos extras (quantum, cor), mas só usa `exec` para calcular os tempos.
 
 ---
