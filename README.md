@@ -1,69 +1,114 @@
-# Simulador de Escalonamento Round Robin
+# 📚 Simulador de Algoritmos de Escalonamento — Round Robin
 
-Este projeto implementa um **simulador de escalonamento de processos** usando o algoritmo **Round Robin**, com interface gráfica construída em **CustomTkinter**.
+---
 
-## Funcionalidades
-- Adição de processos com:
-  - Tempo de execução
-  - Quantum (definido apenas no primeiro processo, usado globalmente)
-- Execução do algoritmo **Round Robin** para calcular o tempo de finalização de cada processo.
-- Interface gráfica que exibe os processos adicionados, cada um com uma cor distinta.
-- Reset do simulador para iniciar novos testes.
+## 🎯 Objetivo
 
-## Estrutura do Projeto
+Fornecer uma implementação simples e didática do algoritmo **Round Robin** para uso em um simulador de escalonamento. O código permite:
 
-├── Main.py # Interface gráfica (CustomTkinter)
-├── Backend/
-│ └── Escalonador.py # Classe que gerencia os processos e conecta ao algoritmo
-├── Algoritimos/
-│ └── Round_robin.py # Implementação do algoritmo Round Robin
+* Adicionar processos com tempos de execução (unidades arbitrárias).
+* Definir um **quantum** (fatias de tempo iguais) — definido apenas na criação do primeiro processo e fixado durante a simulação.
+* Executar a simulação e obter os tempos de finalização de cada processo.
+* Testar a lógica via uma interface desktop simples (`main.py`) ou chamando a função `round_robin` diretamente.
 
+---
 
-## Como Executar
-1. Instale as dependências:
-   ```bash
-   pip install customtkinter CTkMessagebox
+## 🗂 Arquivos principais
 
-    Execute o programa:
+* `backend/round_robin.py`
 
-    python main.py
+  * Implementa a função `round_robin(processos, quantum)` que recebe uma lista de processos (`[{"pid": "P1", "exec": 5, "quantum": 3, "cor": "#..."}, ...]`) e o `quantum` fixo, e retorna uma lista com o tempo de finalização de cada processo (na ordem recebida).
 
-Uso
+* `backend/escalonador.py`
 
-    Insira o Tempo de Execução do processo.
+  * Classe `Escalonador` que mantém o estado dos processos, gera PID, escolhe cores aleatórias para cada processo e fixa o quantum quando o primeiro processo é adicionado. Fornece métodos:
 
-    Insira o Quantum (este valor é usado como quantum global — depois de adicionar o primeiro processo, o campo de quantum é desabilitado).
+    * `adicionar_processo(tempo_exec, quantum_input=None)` — adiciona um processo (e define o quantum caso ainda não exista).
+    * `executar_round_robin()` — invoca `round_robin` com os processos armazenados.
+    * `resetar()` — limpa o estado.
 
-    Clique em Adicionar Processo para inserir mais processos.
+* `backend/main.py`
 
-    Clique em Iniciar Simulação para executar o Round Robin e ver o tempo de finalização de cada processo.
+  * Interface simples com `customtkinter` para adicionar processos, fixar quantum, iniciar a simulação e visualizar resultados. Útil para testes interativos.
 
-    Use o botão ↻ para resetar o simulador e começar de novo.
+---
 
-Arquivos principais
+## ✅ Como funciona o algoritmo — explicação intuitiva
 
-    main.py — controla a interface gráfica, captura entradas do usuário e mostra resultados.
+Round Robin (RR) é um algoritmo preemptivo concebido para escalonar processos de forma justa e responsiva. Ele funciona assim:
 
-    backend/escalonador.py — gerencia a lista de processos, gera PIDs, define o quantum global e integra com o algoritmo.
+1. Os processos são colocados em uma fila FIFO na ordem de chegada.
+2. Existe um parâmetro `quantum` (p.ex. 3 unidades). Cada processo, ao receber CPU, roda por no máximo `quantum` unidades.
+3. Se um processo concluir antes do fim da fatia, libera a CPU e registra seu tempo de conclusão.
+4. Se não concluir, sua execução restante é reduzida em `quantum` e ele vai para o final da fila.
+5. Repete-se até que não haja mais processos.
 
-    backend/algoritimos/round_robin.py — simula o algoritmo Round Robin e retorna os tempos de finalização.
+Vantagens: boa responsividade para sistemas interativos; evita inanição (starvation).
+Desvantagens: overhead de troca de contexto se `quantum` for muito pequeno; desempenho ruim para throughput se `quantum` for muito grande (chegando a se comportar como FCFS).
 
-Observações sobre o comportamento atual
+---
 
-    O quantum é definido na inserção do primeiro processo e aplicado globalmente a todos os processos subsequentes.
+## 🔎 Exemplo passo a passo
 
-    Cada processo recebe uma cor aleatória para identificação visual no display.
+Processos: P1=5, P2=3, P3=8 — Quantum = 3
 
-    O simulador retorna os tempos de finalização (tempo em unidades de clock) de cada processo após a execução.
+* t=0: fila = \[P1, P2, P3]
+* P1 recebe CPU por 3 → resta 2 → t=3 → fila = \[P2, P3, P1]
+* P2 recebe CPU por 3 → resta 0 → t=6 → P2 finaliza em 6 → fila = \[P3, P1]
+* P3 recebe CPU por 3 → resta 5 → t=9 → fila = \[P1, P3]
+* P1 recebe CPU por 2 → resta 0 → t=11 → P1 finaliza em 11 → fila = \[P3]
+* P3 recebe CPU por 3 → resta 2 → t=14 → fila = \[P3]
+* P3 recebe CPU por 2 → resta 0 → t=16 → P3 finaliza em 16
 
-Melhorias Futuras
+Tempos de finalização: `[11, 6, 16]` (P1, P2, P3)
 
-    Gráfico de Gantt: adicionar uma visualização de Gantt para mostrar a linha do tempo de execução dos processos (eixo X = tempo, eixo Y = processos). O gráfico exibirá as fatias de tempo (quantums) atribuídas a cada processo, permitindo visualizar a alternância de CPU característica do Round Robin.
+---
 
-    Cálculo e exibição de métricas como turnaround time, waiting time e throughput.
+## 📈 Complexidade
 
-    Exportar resultados para CSV ou imagem (ex.: salvar o Gantt como PNG).
+* **Tempo:** O número de fatias executadas é aproximadamente `S = ceil(sum(exec) / quantum)`; cada fatia faz uma operação O(1) (atualiza tempos e manipula fila). Assim o custo é O(S). Em termos de `n` e `T = sum(exec)`, O(T / quantum).
+* **Espaço:** O(n) para armazenar vetores auxiliares (`tempo_restante`, `tempo_finalizacao`, `fila`).
 
-    Melhorar a UI para permitir editar/remover processos e ajustar quantum dinamicamente.
+---
 
-    Implementar testes automatizados para validar o algoritmo com diferentes cenários.
+## 🧩 Boas práticas e dicas experimentais
+
+* **Escolha do quantum:** experimente valores para entender trade-offs:
+
+  * quantum muito pequeno → muitas trocas de contexto, maior overhead.
+  * quantum muito grande → comportamento parecido com FCFS (pior interatividade para processos curtos).
+
+* **Medições:** calcule o *turnaround time*, *waiting time* e *throughput* para comparar. Exemplo:
+
+  * Turnaround = tempo\_finalizacao - tempo\_chegada (aqui assumimos chegada em 0 para todos).
+  * Waiting = turnaround - tempo\_exec.
+
+* **Visualização:** implemente um diagrama de Gantt (ASCII ou gráfico) para ver a alternância entre processos — facilita o entendimento.
+
+* **Extensões:**
+
+  * Adicionar tempos de chegada diferentes (não só chegada em t=0).
+  * Simular overhead de troca de contexto (adicionando um custo em cada preempção).
+  * Implementar outros algoritmos para comparação: FCFS, SJF (Shortest Job First), Priority, Multilevel Feedback Queue.
+
+---
+
+## 🛠 Como executar / testar
+
+1. Abra o terminal na pasta `backend`.
+2. Execute `python3 main.py` (requere `customtkinter` e `CTkMessagebox`) para usar a interface gráfica de teste.
+3. Ou importe e invoque diretamente em um REPL:
+
+* **Requesitos**: `pip install customtkinter`
+
+> Observação: no repositório a função espera dicionários com campos extras (quantum, cor), mas só usa `exec` para calcular os tempos.
+
+---
+
+## 🔭 Sugestões de melhoria
+
+* Gerar e exibir um gráfico Gantt ao final da simulação (matplotlib ou UI web).
+* Permitir chegada variável de processos (timestamps de chegada).
+* Medir métricas médias (turnaround médio, waiting médio) e exibi-las.
+* Adicionar opção para simular custo de troca de contexto.
+
