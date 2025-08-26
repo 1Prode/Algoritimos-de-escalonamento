@@ -12,7 +12,7 @@
 
 | Tela Inicial                                             | Adicionar Processos                              | Simular Round Robin                                  
 | --------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------- 
-| <img src="/assets/images/TelaInicial" width="400"> | <img src="/assets/images/AdicionarProcessos" width="400"> | <img src="/assets/images/Simular" width="400"> 
+| <img src="assets/TelaInicial" width="400"> | <img src="assets/AdicionarProcessos" width="400"> | <img src="assets/Simular" width="400"> 
 
 ---
 
