@@ -80,32 +80,13 @@ Tempos de finalização: `[11, 6, 16]` (P1, P2, P3)
 
 ---
 
-## 📈 Complexidade
+## 🔭 Sugestões de melhoria
 
-* **Tempo:** O número de fatias executadas é aproximadamente `S = ceil(sum(exec) / quantum)`; cada fatia faz uma operação O(1) (atualiza tempos e manipula fila). Assim o custo é O(S). Em termos de `n` e `T = sum(exec)`, O(T / quantum).
-* **Espaço:** O(n) para armazenar vetores auxiliares (`tempo_restante`, `tempo_finalizacao`, `fila`).
-
----
-
-## 🧩 Boas práticas e dicas experimentais
-
-* **Escolha do quantum:** experimente valores para entender trade-offs:
-
-  * quantum muito pequeno → muitas trocas de contexto, maior overhead.
-  * quantum muito grande → comportamento parecido com FCFS (pior interatividade para processos curtos).
-
-* **Medições:** calcule o *turnaround time*, *waiting time* e *throughput* para comparar. Exemplo:
-
-  * Turnaround = tempo\_finalizacao - tempo\_chegada (aqui assumimos chegada em 0 para todos).
-  * Waiting = turnaround - tempo\_exec.
-
-* **Visualização:** implemente um diagrama de Gantt (ASCII ou gráfico) para ver a alternância entre processos — facilita o entendimento.
-
-* **Extensões:**
-
-  * Adicionar tempos de chegada diferentes (não só chegada em t=0).
-  * Simular overhead de troca de contexto (adicionando um custo em cada preempção).
-  * Implementar outros algoritmos para comparação: FCFS, SJF (Shortest Job First), Priority, Multilevel Feedback Queue.
+* Gerar e exibir um gráfico Gantt ao final da simulação (matplotlib ou UI web).
+* Implementar outros algoritmos para comparação: FCFS, SJF (Shortest Job First), Priority, Multilevel Feedback Queue.
+* Permitir chegada variável de processos (timestamps de chegada).
+* Simular overhead de troca de contexto (adicionando um custo em cada preempção).
+* Medir métricas médias (turnaround médio, waiting médio) e exibi-las.
 
 ---
 
@@ -120,11 +101,3 @@ Tempos de finalização: `[11, 6, 16]` (P1, P2, P3)
 > Observação: no repositório a função espera dicionários com campos extras (quantum, cor), mas só usa `exec` para calcular os tempos.
 
 ---
-
-## 🔭 Sugestões de melhoria
-
-* Gerar e exibir um gráfico Gantt ao final da simulação (matplotlib ou UI web).
-* Permitir chegada variável de processos (timestamps de chegada).
-* Medir métricas médias (turnaround médio, waiting médio) e exibi-las.
-* Adicionar opção para simular custo de troca de contexto.
-
