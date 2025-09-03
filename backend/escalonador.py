@@ -1,5 +1,5 @@
 import random
-from algoritimos.round_robin import round_robin  # Importa a função de escalonamento
+from algoritmos.round_robin import round_robin  # Importa a função de escalonamento
 
 class Escalonador:
     def __init__(self):
