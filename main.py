@@ -40,21 +40,16 @@ class SimuladorBase(ctk.CTkToplevel):
         self.execucaoIn = ctk.CTkEntry(control_frame, placeholder_text="Tempo de Execução")
         self.execucaoIn.grid(row=0, column=0, padx=5, pady=5, sticky="ew")
 
-        # anima "Tempo de Execução" apenas se for RR com prioridade
-        if algoritmo_nome == "Round Robin com Prioridade":
-            self._animar_placeholder(self.execucaoIn, "Tempo de Execução  ")
-
         self.quantumIn = None
         if algoritmo_nome in ["Round Robin", "Round Robin com Prioridade"]:
-            self.quantumIn = ctk.CTkEntry(control_frame, placeholder_text="Quantum", width=80)  # 👈 tamanho fixo
+            self.quantumIn = ctk.CTkEntry(control_frame, placeholder_text="Quantum", width=80)
             self.quantumIn.grid(row=0, column=1, padx=3, pady=5)
 
         self.prioridadeIn = None
         if algoritmo_nome == "Round Robin com Prioridade":
-            placeholder_texto = "Prioridade (menor = mais alta)  "
+            placeholder_texto = "Prioridade (menor = mais alta)"
             self.prioridadeIn = ctk.CTkEntry(control_frame, placeholder_text=placeholder_texto)
             self.prioridadeIn.grid(row=0, column=2, padx=3, pady=5, sticky="ew")
-            self._animar_placeholder(self.prioridadeIn, placeholder_texto)
 
         # Botões
         self.addProcessoBtn = ctk.CTkButton(
@@ -85,15 +80,6 @@ class SimuladorBase(ctk.CTkToplevel):
     def _on_close(self):
         self.fechar_callback(self.algoritmo_nome)
         self.destroy()
-
-    # ---------------- animação do placeholder ----------------
-    def _animar_placeholder(self, entry_widget, texto, delay=300):
-        def rodar(txt):
-            novo = txt[1:] + txt[0]
-            entry_widget.configure(placeholder_text=novo)
-            self.after(delay, lambda: rodar(novo))
-
-        self.after(delay, lambda: rodar(texto))
 
     # ---------------- MÉTODOS ----------------
     def add_processo(self):
