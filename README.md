@@ -49,7 +49,7 @@ Fornecer uma implementação simples e didática do algoritmo **Round Robin** pa
 
 ---
 
-## ✅ Como funciona o algoritmo — explicação intuitiva
+## ✅ Como funciona o algoritmo Round Robin — explicação intuitiva
 
 Round Robin (RR) é um algoritmo preemptivo concebido para escalonar processos de forma justa e responsiva. Ele funciona assim:
 
@@ -80,10 +80,29 @@ Tempos de finalização: `[11, 6, 16]` (P1, P2, P3)
 
 ---
 
+## 📦 Como funciona o algoritmo FIFO? (First In, First Out)
+
+O algoritmo FIFO é uma estratégia de escalonamento não-preemptiva em que os processos são atendidos na ordem em que chegam, semelhante a uma fila de supermercado: quem chega primeiro, é atendido primeiro.
+
+Funcionamento:
+
+* Todos os processos entram em uma fila (FIFO).
+
+* O primeiro processo da fila recebe a CPU e é executado até terminar, sem interrupções.
+
+* Quando o processo termina, o próximo da fila começa a ser executado.
+
+* Repete-se o ciclo até que não existam mais processos na fila.
+
+Vantagens: simples de implementar, justo para processos curtos que chegam cedo.
+Desvantagens: pode causar efeito comboio (convoy effect), onde processos curtos ficam presos atrás de processos muito longos, reduzindo a responsividade do sistema.
+
+---
+
 ## 🔭 Sugestões de melhoria
 
 * Gerar e exibir um gráfico Gantt ao final da simulação (matplotlib ou UI web).
-* Implementar outros algoritmos para comparação: FCFS, SJF (Shortest Job First), Priority, Multilevel Feedback Queue.
+* Implementar outros algoritmos para comparação: SJF (Shortest Job First), Priority, Multilevel Feedback Queue.
 * Permitir chegada variável de processos (timestamps de chegada).
 * Simular overhead de troca de contexto (adicionando um custo em cada preempção).
 * Medir métricas médias (turnaround médio, waiting médio) e exibi-las.
