@@ -86,13 +86,13 @@ O algoritmo FIFO é uma estratégia de escalonamento não-preemptiva em que os p
 
 Funcionamento:
 
-Todos os processos entram em uma fila (FIFO).
+* Todos os processos entram em uma fila (FIFO).
 
-O primeiro processo da fila recebe a CPU e é executado até terminar, sem interrupções.
+* O primeiro processo da fila recebe a CPU e é executado até terminar, sem interrupções.
 
-Quando o processo termina, o próximo da fila começa a ser executado.
+* Quando o processo termina, o próximo da fila começa a ser executado.
 
-Repete-se o ciclo até que não existam mais processos na fila.
+* Repete-se o ciclo até que não existam mais processos na fila.
 
 Vantagens: simples de implementar, justo para processos curtos que chegam cedo.
 Desvantagens: pode causar efeito comboio (convoy effect), onde processos curtos ficam presos atrás de processos muito longos, reduzindo a responsividade do sistema.
