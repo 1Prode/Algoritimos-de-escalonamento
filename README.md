@@ -99,6 +99,18 @@ Desvantagens: pode causar efeito comboio (convoy effect), onde processos curtos 
 
 ---
 
+🔹 Algoritmo SJF (Shortest Job First)
+
+O Shortest Job First (SJF) é um algoritmo de escalonamento que seleciona sempre o processo com menor tempo de execução para ser executado primeiro.
+A ideia é simples: dar prioridade às tarefas mais curtas, diminuindo o tempo médio de espera dos processos na fila.
+
+* Tipo: não-preemptivo (um processo, ao começar, vai até o fim).
+* Critério de escolha: o menor valor de exec (tempo de execução).
+* Vantagem: reduz o tempo médio de espera em comparação ao FIFO.
+* Desvantagem: pode causar starvation (processos longos ficam esperando indefinidamente se sempre chegarem processos curtos).
+
+---
+
 ## 🔭 Sugestões de melhoria
 
 * Gerar e exibir um gráfico Gantt ao final da simulação (matplotlib ou UI web).
