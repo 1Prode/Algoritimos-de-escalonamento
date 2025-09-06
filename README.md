@@ -102,7 +102,7 @@ Desvantagens: pode causar efeito comboio (convoy effect), onde processos curtos 
 ## 🔭 Sugestões de melhoria
 
 * Gerar e exibir um gráfico Gantt ao final da simulação (matplotlib ou UI web).
-* Implementar outros algoritmos para comparação: SJF (Shortest Job First), Priority, Multilevel Feedback Queue.
+* Implementar outros algoritmos para comparação: Shortest Remaining Time First, Priority Scheduling Preemptivo, Multilevel Feedback Queue.
 * Permitir chegada variável de processos (timestamps de chegada).
 * Simular overhead de troca de contexto (adicionando um custo em cada preempção).
 * Medir métricas médias (turnaround médio, waiting médio) e exibi-las.
@@ -115,7 +115,7 @@ Desvantagens: pode causar efeito comboio (convoy effect), onde processos curtos 
 2. Execute `python3 main.py` (requere `customtkinter` e `CTkMessagebox`) para usar a interface gráfica de teste.
 3. Ou importe e invoque diretamente em um REPL:
 
-* **Requesitos**: `pip install customtkinter`
+* **Requisitos**: `pip install customtkinter`
 
 > Observação: no repositório a função espera dicionários com campos extras (quantum, cor), mas só usa `exec` para calcular os tempos.
 
