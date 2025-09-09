@@ -99,7 +99,7 @@ Desvantagens: pode causar efeito comboio (convoy effect), onde processos curtos 
 
 ---
 
-🔹 Algoritmo SJF (Shortest Job First)
+## 🔹 Algoritmo SJF (Shortest Job First)
 
 O Shortest Job First (SJF) é um algoritmo de escalonamento que seleciona sempre o processo com menor tempo de execução para ser executado primeiro.
 A ideia é simples: dar prioridade às tarefas mais curtas, diminuindo o tempo médio de espera dos processos na fila.
